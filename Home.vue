@@ -2,6 +2,7 @@
 <template>
     <div>
         <h1>内容</h1>
+    
         <table class="ct">
             <thead>
                 <tr class="head">
@@ -11,28 +12,37 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="body" v-for="person in persons">
+                <tr class="body" v-for="person in all">
                     <td v-for="field in fields">
                         {{person[field.key]}}
                     </td>
                 </tr>
             </tbody>
+            <tfoot>
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-size="this.pageItem" layout="total, prev, pager, next, jumper" :total="this.persons.length">
+                </el-pagination>
+            </tfoot>
         </table>
-    
         <button class="logout" @click="logout()">退出</button>
     </div>
 </template>
 <script>
 import Auth from '../lib/login.js'
 import router from '../router'
+
 export default {
     data() {
         return {
+            currentPage1: 5,
+            currentPage2: 5,
+            currentPage3: 5,
+            currentPage4: 1,
+            pageItem:5,
+            all: [],
             fields: [
-                { key: 'sex', name: '性别' },
                 { key: 'name', name: '姓名' },
-                { key: 'age', name: '年龄' }
-                
+                { key: 'sex', name: '性别' },
+                { key: 'age', name: '年龄' },
             ],
             persons: [
                 { name: '小明', age: '18', sex: '男' },
@@ -43,18 +53,38 @@ export default {
                 { name: '王五', age: '23', sex: '男' },
                 { name: '西门', age: '38', sex: '男' },
                 { name: '二丫', age: '28', sex: '女' },
+                { name: '小明', age: '18', sex: '男' },
+                { name: '小红', age: '23', sex: '女' },
+                { name: '张三', age: '35', sex: '男' },
+                { name: '李四', age: '32', sex: '男' },
+                { name: '刘二', age: '23', sex: '女' },
+                { name: '王五', age: '23', sex: '男' },
+                { name: '西门', age: '38', sex: '男' },
+                { name: '二丫', age: '28', sex: '女' },
             ],
-
         }
     },
     mounted() {
         if (Auth.check()) {
             router.push(Auth.logoutSuccess())
+        };
+        for (var i = 0; i < 5; i++) {
+            var allPersons = this.persons[i]
+            this.all.push(allPersons)
         }
     },
     methods: {
-        toggleTabs: function (index) {
-            this.nowIndex = index;
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            this.all = []
+            for (var i = 6; i < 11; i++) {
+                var allPersons = this.persons[i]
+                this.all.push(allPersons)
+            }
+            //  this.all.push(this.persons.slice(6,10))
+
         },
         logout() {
             if (Auth.logout()) {
