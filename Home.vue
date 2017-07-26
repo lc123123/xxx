@@ -41,7 +41,7 @@ export default {
             totalCount: 1000,
 
             currentPage: 1,
-            pageItem: 5,
+            pageItem: 10,
             all: [],
             fields: [
                 { key: 'name', name: '姓名' },
@@ -68,8 +68,7 @@ export default {
                 { name: '刘二', age: '23', sex: '女' },
                 { name: '王五', age: '23', sex: '男' },
                 { name: '西门', age: '38', sex: '男' },
-                { name: '二丫', age: '28', sex: '女' },
-                
+                { name: '二丫', age: '28', sex: '女' },               
             ],
         }
     },
@@ -77,10 +76,11 @@ export default {
         if (Auth.check()) {
             router.push(Auth.logoutSuccess())
         };
-        for (var i = 0; i < 5; i++) {
-            var allPersons = this.persons[i]
-            this.all.push(allPersons)
-        }
+        // for (var i = 0; i < 5; i++) {
+        //     var allPersons = this.persons[i]
+        //     this.all.push(allPersons)
+        // }
+        this.handleCurrentChange(1)
     },
     methods: {
         handleSizeChange(val) {
@@ -94,9 +94,10 @@ export default {
             //页数++
             console.log(val)
             this.all = []
-            for (var i = (val + 5); i < (val + 10); i++) {
+            for (var i = ((val-1)*this.pageItem); i < ((val-1)*this.pageItem+this.pageItem); i++) {
                 var allPersons = this.persons[i]
                 this.all.push(allPersons)
+                console.log(i)
             }
             //  this.all.push(this.persons.slice(6,10))
         },
