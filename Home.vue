@@ -1,4 +1,3 @@
-
 <template>
     <div>
         <h1>内容</h1>
@@ -13,31 +12,36 @@
             </thead>
             <tbody>
                 <tr class="body" v-for="person in all">
+    
                     <td v-for="field in fields">
                         {{person[field.key]}}
                     </td>
                 </tr>
             </tbody>
             <tfoot>
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-size="this.pageItem" layout="total, prev, pager, next, jumper" :total="this.persons.length">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-size="this.pageItem" layout="total, prev, pager, next, jumper" :total="this.persons.length">
                 </el-pagination>
             </tfoot>
         </table>
         <button class="logout" @click="logout()">退出</button>
+    
     </div>
 </template>
 <script>
 import Auth from '../lib/login.js'
 import router from '../router'
-
 export default {
     data() {
         return {
-            currentPage1: 5,
-            currentPage2: 5,
-            currentPage3: 5,
-            currentPage4: 1,
-            pageItem:5,
+            //表格当前页数据
+            tableData: [],
+            //默认每页数据量
+            pagesize: 10,
+            //默认数据总数
+            totalCount: 1000,
+
+            currentPage: 1,
+            pageItem: 5,
             all: [],
             fields: [
                 { key: 'name', name: '姓名' },
@@ -61,6 +65,11 @@ export default {
                 { name: '王五', age: '23', sex: '男' },
                 { name: '西门', age: '38', sex: '男' },
                 { name: '二丫', age: '28', sex: '女' },
+                { name: '刘二', age: '23', sex: '女' },
+                { name: '王五', age: '23', sex: '男' },
+                { name: '西门', age: '38', sex: '男' },
+                { name: '二丫', age: '28', sex: '女' },
+                
             ],
         }
     },
@@ -78,13 +87,18 @@ export default {
             console.log(`每页 ${val} 条`);
         },
         handleCurrentChange(val) {
+
+            this.persons.slice((val - 1) * 5, (val - 1) * 5 + 5)
+            //页数
+            //一页5条
+            //页数++
+            console.log(val)
             this.all = []
-            for (var i = 6; i < 11; i++) {
+            for (var i = (val + 5); i < (val + 10); i++) {
                 var allPersons = this.persons[i]
                 this.all.push(allPersons)
             }
             //  this.all.push(this.persons.slice(6,10))
-
         },
         logout() {
             if (Auth.logout()) {
@@ -92,7 +106,6 @@ export default {
             }
         }
     }
-
 }
 </script>
 <style>
