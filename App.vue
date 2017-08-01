@@ -1,13 +1,12 @@
 <template>
   <div>
-    <router-link to="./Login">请登录</router-link>
-    <router-link to="./Home">进入Home页面</router-link>
+    <!-- <router-link to="./Login">请登录</router-link>
+    <router-link to="./Home">进入Home页面</router-link> -->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-
 
 export default {
   name: 'app',
