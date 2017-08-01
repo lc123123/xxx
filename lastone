@@ -67,6 +67,65 @@ export default {
 
 
 
+# Login.vue
+<template>
+    <div id="app">
+    
+        <!-- <form method="post" @submit.prevent="login"> -->
+        <label>用户名</label>
+        <input type="text" name="用户名" required v-model="formData.username">
+        <br>
+        <label>密码</label>
+        <input type="password" name="密码" required v-model="formData.password">
+        <br>
+        <!-- <input type="submit" value="登录"> -->
+        <button class="login" @click="axios(login())">登录</button>
+        <!-- </form> -->
+    </div>
+</template>
+
+<script>
+import Home from './Home'
+import axios from 'axios'
+import md5 from 'js-md5'
+import Auth from '../lib/login.js'
+import router from '../router'
+export default {
+    data() {
+        return {
+            formData: {
+                username: '',
+                password: '',
+            },
+        }
+    },
+    computed: {
+    },
+    mounted() {
+        if (!Auth.check()) {
+            console.log('1')
+            router.push(Auth.loginSuccess())
+        }
+    },
+    methods: {
+        login() {
+            if (Auth.login(this.formData.username, this.formData.password)) {
+                router.push(Auth.loginSuccess())
+            } else {
+                alert('用户名或密码错误')
+            }
+        },
+        axios() {
+            return Auth.axios(this.formData.username, this.formData.password)
+        }
+    }
+}
+</script>
+<style>
+
+</style>
+
+
 
 # Home.vue
 <template>
